@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#173e35"><meta name="description" content="AeroCRNS — منصة محاكاة رطوبة التربة، تصحيح CTS، والحماية الحرارية والتحكم الذكي في الري.">
+<title>AeroCRNS — غرفة التحكم</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23173e35'/%3E%3Cpath d='M17 44C15 20 37 13 49 15C50 34 36 46 17 44Z' fill='%23c0d893'/%3E%3Cpath d='M16 49L39 26' stroke='%23f6f6ee' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="views.css"><link rel="stylesheet" href="refinements.css">
+<script src="data.js" defer></script><script src="model.js" defer></script><script src="app.js?v=sensor-20260916" defer></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a href="#overview" class="brand" aria-label="AeroCRNS الرئيسية"><span class="brand-mark">⌁</span><span dir="ltr">Aero<span>CRNS</span><small>FIELD INTELLIGENCE</small></span></a>
+  <div class="workspace-label">مساحة العمل <span>01</span></div>
+  <nav aria-label="القائمة الرئيسية">
+    <a href="#overview" data-view="overview" class="active"><i data-icon="grid"></i>نظرة عامة<span class="nav-dot"></span></a>
+    <a href="#cts" data-view="cts"><i data-icon="sliders"></i>مختبر CTS<span class="tiny-tag">تجريبي</span></a>
+    <a href="#thermal" data-view="thermal"><i data-icon="shield"></i>الحماية الحرارية</a>
+    <a href="#records" data-view="records"><i data-icon="chart"></i>سجل القياسات</a>
+    <a href="#method" data-view="method"><i data-icon="layers"></i>كيف يعمل النظام</a>
+  </nav>
+  <div class="sidebar-bottom"><div class="sensor-mini"><span class="status-dot"></span><div>محطة AeroCRNS<small>BORON-10 · نموذج محاكاة</small></div><i data-icon="radio"></i></div><p>قياس أوسع.<br><strong>قرار ري أدق.</strong></p><div class="side-foot">AeroCRNS <span>RESEARCH PLATFORM / 01</span></div></div>
+</aside>
+<div class="shell">
+  <header class="topbar"><div class="breadcrumb">مساحة العمل <span>/</span> <strong id="crumb">نظرة عامة</strong></div><div class="top-actions"><span class="simulation-badge"><span class="status-dot"></span>بيئة محاكاة</span><span class="top-divider"></span><span class="avatar">AC</span></div></header>
+  <main id="main"><div class="page-heading"><div><p class="eyebrow">FIELD OVERVIEW</p><h1>كل قطرة، بقرار مدروس.</h1><p class="muted">صورة أوضح للتربة. تحكّم أذكى في الري.</p></div><button class="btn" id="export"><i data-icon="download"></i>تصدير القياسات</button></div>
+  <div class="context-bar"><div><i data-icon="pin"></i><strong>الحقل التجريبي 01</strong><span class="subtle">تربة رملية طميية · برسيم</span></div><span class="mono">01 — 14 AUG 2026</span></div>
+  <section class="metrics" id="metrics"></section>
+  <div class="overview-grid"><section class="panel map-panel"><div class="panel-head"><div><p class="eyebrow">FIELD INTELLIGENCE</p><h2>نظرة على الحقل</h2></div><span class="pill">متوسط حقلي</span></div><div id="field-map"></div><div class="map-bottom"><span><b class="legend-dot"></b>نطاق استشعار توضيحي</span><span>CRNS · محطة واحدة</span></div></section><section id="valve" class="valve-card"></section></div>
+  <section class="panel trend-panel"><div class="panel-head"><div><p class="eyebrow">SOIL MOISTURE</p><h2>الرطوبة تقود القرار</h2></div><div class="chart-key"><span><b style="background:#376b57"></b>بعد CTS</span><span><b style="background:#a9b2a4"></b>قبل CTS</span><span><b style="background:#c3924e"></b>عتبة الري</span></div></div><div id="chart"></div><div id="timeline"></div></section>
+  </main>
+  <footer><span>AeroCRNS <b>·</b> استشعار حقلي. إدارة واعية للمياه.</span><span>CTS عامل بحثي مقترح يحتاج إلى تحقق ميداني.</span></footer>
+</div>
+<div id="toast" role="status"></div>
+</body></html>
