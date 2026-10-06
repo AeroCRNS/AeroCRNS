@@ -1,0 +1,29 @@
+.language-toggle{border:1px solid #ccd8c5;background:#fff;color:#234f40;border-radius:7px;padding:7px 12px;font:600 12px Arial,Tahoma,sans-serif;cursor:pointer;white-space:nowrap;min-height:34px}
+.language-toggle:hover{background:#edf2e7}.language-toggle:focus-visible{outline:3px solid #a7bd87;outline-offset:2px}
+html[lang=en] body{font-family:Manrope,Arial,sans-serif}
+html[lang=en] .sidebar{right:auto;left:0}
+html[lang=en] .shell{margin-right:0;margin-left:238px}
+html[lang=en] .nav-dot,html[lang=en] .tiny-tag,html[lang=en] .sensor-mini>.icon{margin-right:0;margin-left:auto}
+html[lang=en] .context-bar .subtle{margin-right:0;margin-left:10px}
+html[lang=en] .valve-foot b{margin-right:0;margin-left:5px}
+html[lang=en] .chart-tip{direction:ltr;text-align:left}
+html[lang=en] .notice strong{margin-left:0;margin-right:12px}
+html[lang=en] th,html[lang=en] td{text-align:left}
+html[lang=en] .comparison-arrow{transform:rotate(180deg)}
+html[lang=en] .metric-top,html[lang=en] .metric-foot{font-size:12px}
+html[lang=en] .layer-button strong{font-size:13px}
+html[lang=en] .layer-button{text-align:left}
+html[lang=en] .page-heading h1{line-height:1.35}
+html[lang=en] .sidebar nav a[data-view=overview]{--short:'Home'}
+html[lang=en] .sidebar nav a[data-view=cts]{--short:'CTS'}
+html[lang=en] .sidebar nav a[data-view=thermal]{--short:'Thermal'}
+html[lang=en] .sidebar nav a[data-view=records]{--short:'Log'}
+html[lang=en] .sidebar nav a[data-view=sensor]{--short:'Sensor'}
+html[lang=en] .sidebar nav a[data-view=method]{--short:'Method'}
+html[lang=en] .modes button{font-family:Arial,sans-serif}
+html[lang=en] .identity{text-align:right}
+html[lang=en] .actions{max-width:290px}
+@media(max-width:1150px){html[lang=en] .shell{margin-left:210px}}
+@media(max-width:850px){html[lang=en] .shell{margin-left:78px}}
+@media(max-width:640px){html[lang=en] .shell{margin:0}html[lang=en] .sidebar{left:0;right:0}.top-actions{gap:8px}.language-toggle{font-size:11px;padding:6px 9px}.top-actions .top-divider,.top-actions .avatar{display:none}html[lang=en] .breadcrumb{font-size:10px}html[lang=en] .page-heading h1{font-size:25px}html[lang=en] .context-bar>div{flex-wrap:wrap}html[lang=en] .sidebar nav a:after{font-family:Arial,sans-serif}}
+@media(max-width:520px){html[lang=en] .modes button{font-size:10px;padding:8px 5px}html[lang=en] .actions{max-width:270px}html[lang=en] .actions button{font-size:9px;padding:7px 6px}}
