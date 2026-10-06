@@ -1,5 +1,6 @@
 (function(root){
 'use strict';
+// Legacy guide example only. The UI applies the selected farm/crop profile before displaying results.
 const defaults={enabled:true,alpha:0.0006,tempOffset:0,reference:25,fc:0.18,wp:0.07,mad:0.5,window:12,thickness:20};
 function validate(p){if(!Number.isFinite(p.fc)||!Number.isFinite(p.wp)||p.fc<=p.wp||p.wp<0||p.fc>0.6)throw Error('يجب أن تكون السعة الحقلية أكبر من نقطة الذبول.');if(!Number.isFinite(p.mad)||p.mad<0||p.mad>1)throw Error('MAD بين 0 و1.');if(![12,24].includes(p.window))throw Error('نافذة المتوسط 12 أو 24 ساعة.');if(!Number.isFinite(p.alpha)||Math.abs(p.alpha)>0.003||!Number.isFinite(p.tempOffset)||Math.abs(p.tempOffset)>20)throw Error('قيمة CTS خارج النطاق المسموح.');}
 function calculate(data,p){validate(p); const threshold=p.fc-p.mad*(p.fc-p.wp);let sum=0,sumCts=0,variance=0,run=0,totalHours=0;const corrected=[],adjusted=[],variances=[];

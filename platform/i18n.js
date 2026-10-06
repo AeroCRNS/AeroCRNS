@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const entries = {
+    'تُضبط قيم FC وWP وMAD من ملف المزرعة وإعدادات المختص أعلى الصفحة.':'Set FC, WP and MAD in the farm profile and specialist settings above.',
     'AeroCRNS — غرفة التحكم':'AeroCRNS — Control Room',
     'AeroCRNS · مشهد الحساس':'AeroCRNS · Sensor Viewer',
     'AeroCRNS الرئيسية':'AeroCRNS home',
