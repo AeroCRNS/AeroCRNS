@@ -21,9 +21,12 @@
   const key = () => [selection.id,selection.soil,selection.crop,selection.stage].join('|');
   const reference = () => {
     const farm=selectedFarm();
-    if(farm.dataset==='ten-farms')return ['soil','crop','stage'].every(k=>farm[k]===selection[k])?{fc:farm.fc,wp:farm.wp,mad:farm.mad}:null;
-    const soil=data.soils.find(s=>s.id===selection.soil), stage=data.stages.find(s=>s.crop===selection.crop && s.stage===selection.stage);
-    return soil && stage && [soil.fc,soil.wp,stage.mad].every(Number.isFinite) ? {fc:soil.fc,wp:soil.wp,mad:stage.mad} : null;
+    // Keep site soil properties when the texture is unchanged. For a changed
+    // texture, use a documented test case with that texture as the starting point.
+    const soil=farm.soil===selection.soil?farm:data.farms.find(f=>f.soil===selection.soil);
+    const stage=data.farms.find(f=>f.crop===selection.crop && f.stage===selection.stage)
+      || data.stages.find(s=>s.crop===selection.crop && s.stage===selection.stage && Number.isFinite(s.mad));
+    return soil && stage ? {fc:soil.fc,wp:soil.wp,mad:stage.mad}:null;
   };
   const valid = p => { try { AeroModel.validate({...params,...p}); return ['fc','wp','mad'].every(k=>Number.isFinite(p[k])); } catch { return false; } };
   const persist = () => { try { localStorage.setItem(storageKey,JSON.stringify(saved)); return true; } catch { return false; } };
@@ -43,9 +46,13 @@
   function render() {
     const stages=[...new Set(data.stages.filter(s=>s.crop===selection.crop).map(s=>s.stage).concat(selection.stage,'Custom'))];
     const ref=reference(), p=active || ref, farm=selectedFarm();
+    const soilSource=farm.soil===selection.soil?farm:data.farms.find(f=>f.soil===selection.soil);
+    const cropSource=data.farms.find(f=>f.crop===selection.crop && f.stage===selection.stage);
     panel.innerHTML=`<div class="ag-heading"><div><p class="eyebrow">FIELD PROFILE / DEMO</p><h2>${t('ابدأ من مزرعتك','Start with your farm')}</h2></div><span class="ag-badge">${t('قيم تجريبية تحتاج معايرة','Demo values · calibration required')}</span></div>
       <div class="ag-selects">${select('id','01 المنطقة / المحافظة','01 Location',data.farms.map(f=>f.id))}${select('soil','02 نوع التربة','02 Soil',data.soils.map(s=>s.id))}${select('crop','03 المحصول','03 Crop',[farm.crop,...new Set(data.farms.map(f=>f.crop).filter(c=>c!==farm.crop))])}${select('stage','04 مرحلة النمو','04 Growth stage',stages)}${select('irrigation','05 نظام الري','05 Irrigation system',[...new Set(data.farms.map(f=>f.irrigation))])}</div>
       <div class="ag-values"><span>FC <b>${p ? p.fc.toFixed(3):'—'}</b> m³/m³</span><span>WP <b>${p ? p.wp.toFixed(3):'—'}</b> m³/m³</span><span>MAD <b>${p ? (p.mad*100).toFixed(1)+'%':'—'}</b></span><span class="ag-trigger">${t('عتبة الري','Irrigation threshold')} <b>${p ? (p.fc-p.mad*(p.fc-p.wp)).toFixed(3):'—'}</b> m³/m³</span></div>
+      <p class="ag-note">${t('تُحسب العتبة بالمعادلة FC − MAD × (FC − WP). عند تغيير المحصول تبقى خصائص التربة وتُحدّث قيمة MAD حسب مرحلة النمو. تغيير نظام الري لا يغيّر هذه العتبة بذاته.','The threshold is FC − MAD × (FC − WP). Changing crop retains soil properties and updates MAD for the growth stage. Irrigation system alone does not change this threshold.')}</p>
+      ${!saved[key()]&&ref?`<small class="ag-source">${t('مرجع خصائص التربة التجريبي','Soil test reference')}: ${name(soilSource.id)} · ${t('مرجع المحصول والمرحلة','Crop/stage reference')}: ${cropSource?name(cropSource.id):t('جدول مراحل النمو التجريبي','Demo growth-stage table')}. ${t('قيم ابتدائية تحتاج اعتماد المختص للموقع المختار.','Starting values requiring specialist approval for the selected site.')}</small>`:''}
       <p class="ag-status" role="status">${active ? (saved[key()] ? t('مطبّق: تعديلات المختص لهذا الاختيار.','Applied: specialist edits for this selection.') : t('مطبّق: قيم اختبار من الملف؛ تحتاج معايرة واعتمادًا موقعيًا.','Applied: workbook test values; site calibration and approval required.')) : t('توقفت النتائج: لا توجد قيم مطابقة لهذا الاختيار في الحالة الأصلية. استعد اختيارات الحالة أو أدخل قيم المختص أدناه.','Results paused: no matching values for this combination in the original case. Restore the case selections or enter specialist values below.')}</p>
       ${farm.dataset==='ten-farms'?`<details class="ag-case"><summary>${t('بيانات الحالة ومصدرها','Case data and source')}</summary><p class="ag-note">${t('بيانات الحالة الأصلية في الملف، وقد تختلف عن اختياراتك المعدّلة. حقول العمق والملوحة والاحتياج المائي معروضة للتوثيق ولا تدخل في معادلة العتبة الحالية.','Original workbook case data may differ from your edited selections. Depth, salinity and water needs are shown for reference and do not enter the current threshold formula.')}</p><dl class="ag-case-grid" lang="ar" dir="rtl">${[['المنطقة / المحافظة',farm.region+' / '+farm.city],['الصنف',farm.variety],['نظام الري في الحالة الأصلية',farm.irrigation],['المرحلة الأصلية',names[farm.stage]||farm.stage],['عمق الجذور الاختباري',farm.rootDepth+' سم'],['EC اختباري، ليس قياسًا',farm.ec+' '+farm.ecUnit],['الاحتياج المائي',farm.waterNeed+' ('+farm.waterUnit+')'],['الشهر / الموسم',farm.season],['حالة البيانات',farm.status]].map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl><p lang="ar" dir="rtl" class="ag-note">${farm.note}</p><a href="${farm.sourceUrl}" target="_blank" rel="noopener noreferrer" lang="ar">${farm.sourceTitle} ↗</a><button type="button" id="ag-reset-case" class="btn">${t('استعادة اختيارات الحالة الأصلية','Restore original case selections')}</button></details>`:''}
       <details ${!active?'open':''}><summary>${t('إعدادات المختص الزراعي','Agricultural specialist settings')}</summary><form id="ag-form" novalidate><p>${t('عدّل قيم هذا الموقع والمحصول بعد مراجعة المعايرة والعوامل الزراعية. التعديلات تحفظ في هذا المتصفح فقط؛ هذه واجهة تجريبية بلا حسابات أو صلاحيات مستخدمين.','Edit this site and crop profile after reviewing calibration and agronomic factors. Changes are saved only in this browser; this demo has no user accounts or role enforcement.')}</p><div class="ag-edit">${['fc','wp','mad'].map(k=>`<label for="ag-edit-${k}">${k.toUpperCase()} ${k==='mad'?'(0–1)':'(m³/m³)'}<input id="ag-edit-${k}" name="${k}" type="number" step="any" min="0" max="${k==='mad'?1:.6}" required value="${p?p[k]:''}"></label>`).join('')}<button class="btn" type="submit">${t('تطبيق وحفظ القيم','Apply and save')}</button><button class="btn" id="ag-restore" type="button">${t('استعادة قيم الملف','Restore reference')}</button></div><p id="ag-error" role="alert"></p></form></details>
@@ -57,7 +64,7 @@
     panel.querySelector('#ag-error').textContent=message;
     ['id','soil','crop','stage','irrigation'].forEach(field=>panel.querySelector('#ag-'+field).onchange=e=>{
       if(field==='id') selection={...data.farms.find(f=>f.id===e.target.value)};
-      else {selection[field]=e.target.value;if(field==='crop')selection.stage=selection.crop===selectedFarm().crop?selectedFarm().stage:data.stages.find(s=>s.crop===selection.crop).stage;}
+      else {selection[field]=e.target.value;if(field==='crop')selection.stage=selection.crop===selectedFarm().crop?selectedFarm().stage:data.farms.find(s=>s.crop===selection.crop).stage;}
       message='';applySelection();panel.querySelector('#ag-'+field).focus();
     });
     panel.querySelector('#ag-form').onsubmit=e=>{
