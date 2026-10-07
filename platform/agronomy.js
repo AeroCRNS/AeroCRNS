@@ -31,6 +31,8 @@
     return `<label for="ag-${field}"><span>${t(ar,english)}</span><select id="ag-${field}">${values.map(v=>option(v,selection[field])).join('')}</select></label>`;
   }
   function updateContext() {
+    const references=document.querySelector(".sources-card");
+    if(references) references.outerHTML=scientificReferences();
     const context=document.querySelector('.context-bar');
     if(context){context.setAttribute('data-i18n-ignore','');context.textContent=[name(selection.id),name(selection.soil),name(selection.crop),name(selection.stage),t('إعادة تشغيل بيانات محاكاة ثابتة · أغسطس 2026','Fixed simulation replay · August 2026')].join(' · ');}
     document.querySelector('#main').hidden=!active;
