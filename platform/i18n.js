@@ -2,6 +2,15 @@
 (() => {
   'use strict';
   const entries = {
+    "من القياس إلى قرار الري":"From measurement to irrigation decisions",
+    "تُقارن رطوبة التربة بعتبة تعتمد على خصائص التربة والمحصول ومرحلة النمو. تتيح المحاكاة استكشاف أثر هذه القيم قبل اعتمادها ميدانيًا.":"Soil moisture is compared with a threshold based on soil properties, crop and growth stage. The simulation explores these values before field validation.",
+    "تستخدم النسخة التجريبية 336 قراءة ساعية ومعايرة مبسّطة. عند بدء المحاكاة يُحسب المتوسط من القراءات المتاحة حتى تكتمل نافذة القياس.":"The demo uses 336 hourly readings and a simplified calibration. At startup, averages use available readings until the measurement window is complete.",
+    "تُصحَّح القراءات وفق الضغط الجوي ورطوبة الهواء وشدة الأشعة الكونية.":"Readings are corrected for atmospheric pressure, air humidity and cosmic-ray intensity.",
+    "في المحاكاة، يبدأ الري عندما تبلغ الرطوبة العتبة أو تنخفض عنها، ويتوقف عند تجاوزها. تتغير العتبة وفق القيم المختارة للتربة والمحصول.":"In the simulation, irrigation starts at or below the moisture threshold and stops above it. The threshold changes with the selected soil and crop parameters.",
+    "تعرض التجربة أثر الإعدادات على سلسلة رطوبة ثابتة؛ ولا تحاكي تغير رطوبة التربة الناتج عن إضافة مياه الري.":"The demonstration evaluates settings against a fixed moisture series; it does not simulate soil-moisture changes caused by added irrigation water.",
+    "تمت استعادة إعدادات المحاكاة.":"Simulation settings restored.",
+    "سجل المحاكاة بعد تحديث الحسابات وفق إعداداتك الحالية.":"Simulation records recalculated using your current settings.",
+    "حركة الجسيمات ونطاق الاستشعار للتوضيح. تُحسب معاملات CTS وقرارات الري من بيانات المحاكاة وإعداداتك الحالية.":"Particle motion and the sensing footprint are illustrative. CTS factors and irrigation decisions are calculated from simulation data and your current settings.",
     'تُضبط قيم FC وWP وMAD من ملف المزرعة وإعدادات المختص أعلى الصفحة.':'Set FC, WP and MAD in the farm profile and specialist settings above.',
     'AeroCRNS — غرفة التحكم':'AeroCRNS — Control Room',
     'AeroCRNS · مشهد الحساس':'AeroCRNS · Sensor Viewer',
