@@ -3,24 +3,6 @@ window.AERO_AGRONOMY = {
   "range": "Reference Lists!A2:F10; H2:K4",
   "farms": [
     {
-      "id": "Farm A",
-      "soil": "Sandy",
-      "crop": "Date Palm",
-      "stage": "Establishment"
-    },
-    {
-      "id": "Farm B",
-      "soil": "Loamy Sand",
-      "crop": "Tomato",
-      "stage": "Vegetative"
-    },
-    {
-      "id": "Farm C",
-      "soil": "Loam",
-      "crop": "Wheat",
-      "stage": "Mature"
-    },
-    {
       "id": "MEWA-01",
       "label": "حالة اختبار 01",
       "region": "الرياض",
