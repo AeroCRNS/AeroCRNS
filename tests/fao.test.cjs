@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict');
+const f=require('../platform/fao.js');
+const base={fc:.23,wp:.11,p0:.4,etc:5,texture:0,zmin:.2,zmax:1,day:0,fullDay:90,root:1,mode:'direct',efficiency:null,rate:null,area:null};
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-10,`${a} != ${b}`);
+for(const [etc,threshold] of [[3,.1724],[5,.182],[8,.1964],[10,.206],[12,.2156]])near(f.calculate({...base,etc}).threshold,threshold);
+for(const [day,z] of [[0,.2],[45,.6],[90,1],[180,1]])near(f.calculate({...base,mode:'growth',day}).z,z);
+const small=f.calculate({...base,p0:.2,root:.2}),large=f.calculate({...base,p0:.2});
+near(small.taw,24);near(small.raw,4.8);near(large.raw,24);near(small.threshold,large.threshold);
+near(f.calculate({...base,etc:100}).adjustedP,.1);near(f.calculate({...base,p0:.8,etc:0,texture:.1}).adjustedP,.8);
+near(f.calculate({...base,texture:.1}).adjustedP,.44);
+const hydraulic={...base,efficiency:.8,rate:10,area:1000},r=f.calculate(hydraulic),w=f.irrigation(hydraulic,r,r.threshold);
+near(w.net,48);near(w.gross,60);near(w.volume,60);near(w.hours,6);
+assert.equal(f.irrigation(base,r,r.threshold+.01).net,0);
+assert.equal(f.irrigation(base,r,r.threshold).gross,null);
+for(const change of [{fc:.1},{etc:null},{fullDay:0},{zmax:.1},{efficiency:0},{efficiency:1.1},{rate:-1},{area:NaN}])assert.throws(()=>f.calculate({...base,...change}));
+for(const soil of Object.keys(f.soils))for(const crop of Object.values(f.crops)){const x=f.calculate({...base,...f.soilValues(soil),p0:crop.p});assert.ok(x.threshold>f.soilValues(soil).wp);assert.ok(x.raw>0);}
+console.log('PASS: paper examples, roots, bounds, hydraulics, missing/invalid inputs, all 72 soil/crop combinations');
+const vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../platform/data.js'),'utf8'),sandbox);
+const model=require('../platform/model.js');
+const run=etc=>{const plan=f.calculate({...base,etc});return model.calculate(sandbox.window.AERO_DATA,{...model.defaults,fc:base.fc,wp:base.wp,mad:plan.adjustedP});};
+const low=run(3),high=run(10);assert.equal(low.length,336);assert.ok(high.filter(r=>r.open).length>low.filter(r=>r.open).length);
+low.forEach((r,i)=>{near(r.after,high[i].after);near(r.threshold,.1724);near(high[i].threshold,.206);});
+console.log('PASS: ETc changes calculated valve decisions across 336 hours without fabricating sensor readings');

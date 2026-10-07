@@ -2,6 +2,9 @@
 (() => {
   'use strict';
   const entries = {
+    "صافي الري المحسوب":"Calculated net irrigation",
+    "تقدير للساعة المختارة":"Estimate for selected hour",
+    "كمية الري تقدير مستقل لكل ساعة وليست استهلاكًا تراكميًا. السجل يعيد استخدام مدخلات ETc والجذور الحالية لكل القراءات؛ ولا يحاكي تغير الرطوبة بعد الري.":"Irrigation is an independent hourly estimate, not cumulative use. Records reuse current ETc and root inputs across all hours; moisture changes after watering are not simulated.",
     "من القياس إلى قرار الري":"From measurement to irrigation decisions",
     "تُقارن رطوبة التربة بعتبة تعتمد على خصائص التربة والمحصول ومرحلة النمو. تتيح المحاكاة استكشاف أثر هذه القيم قبل اعتمادها ميدانيًا.":"Soil moisture is compared with a threshold based on soil properties, crop and growth stage. The simulation explores these values before field validation.",
     "تستخدم النسخة التجريبية 336 قراءة ساعية ومعايرة مبسّطة. عند بدء المحاكاة يُحسب المتوسط من القراءات المتاحة حتى تكتمل نافذة القياس.":"The demo uses 336 hourly readings and a simplified calibration. At startup, averages use available readings until the measurement window is complete.",
